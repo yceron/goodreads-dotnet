@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -79,6 +82,140 @@ namespace Goodreads.Clients
             };
 
             return Connection.ExecuteRequest<PaginatedList<UserSummary>>("friend/user", parameters, null, "friends");
+        }
+
+
+        /// <summary>
+        /// Gets a list of all friends for the given Goodreads user id.
+        /// </summary>
+        /// <param name="userId">The Goodreads user id.</param>
+        /// <param name="sort">The sort order of the paginated list.</param>
+        /// <returns>A list of the user summary information for their friends.</returns>
+        public IReadOnlyList<UserSummary> GetListOfAllFriends(int userId, SortFriendsList sort = SortFriendsList.FirstName)
+        {
+            var parameters = new List<Parameter>
+            {
+                new Parameter { Name = "id", Value = userId, Type = ParameterType.QueryString },
+                new Parameter { Name = "page", Value = 1, Type = ParameterType.QueryString },
+                new Parameter
+                {
+                    Name = EnumHelpers.QueryParameterKey<SortFriendsList>(),
+                    Value = EnumHelpers.QueryParameterValue(sort),
+                    Type = ParameterType.QueryString
+                }
+            };
+
+            return ClientHelpers.GetAllItems<UserSummary>(this.Connection, "friend/user", "friends", parameters);
+        }
+
+        /// <summary>
+        /// Gets a list of all followers for the given Goodreads user id.
+        /// </summary>
+        /// <param name="userId">The Goodreads user id.</param>
+        /// <param name="sort">The sort order of the paginated list.</param>
+        /// <returns>A list of the user summary information for their followers.</returns>
+        public IReadOnlyList<UserSummary> GetListOfAllFollowers(int userId, SortFriendsList sort = SortFriendsList.FirstName)
+        {
+            var parameters = new List<Parameter>
+            {
+                new Parameter { Name = "id", Value = userId, Type = ParameterType.QueryString },
+                new Parameter { Name = "page", Value = 1, Type = ParameterType.QueryString },
+                new Parameter
+                {
+                    Name = EnumHelpers.QueryParameterKey<SortFriendsList>(),
+                    Value = EnumHelpers.QueryParameterValue(sort),
+                    Type = ParameterType.QueryString
+                }
+            };
+
+            return ClientHelpers.GetAllItems<UserSummary>(this.Connection, string.Format(CultureInfo.InvariantCulture,
+                    "user/{0}/followers", userId), 
+                    "followers", 
+                    parameters);
+        }
+
+        /// <summary>
+        /// Gets a list of all users the given Goodreads user id is following.
+        /// </summary>
+        /// <param name="userId">The Goodreads user id.</param>
+        /// <param name="sort">The sort order of the paginated list.</param>
+        /// <returns>A list of the user summary information for the users they are following</returns>
+        public IReadOnlyList<UserSummary> GetListOfAllFollowing(int userId, SortFriendsList sort = SortFriendsList.FirstName)
+        {
+            var parameters = new List<Parameter>
+            {
+                new Parameter {Name = "id", Value = userId, Type = ParameterType.QueryString},
+                new Parameter {Name = "page", Value = 1, Type = ParameterType.QueryString},
+                new Parameter
+                {
+                    Name = EnumHelpers.QueryParameterKey<SortFriendsList>(),
+                    Value = EnumHelpers.QueryParameterValue(sort),
+                    Type = ParameterType.QueryString
+                }
+            };
+
+            return ClientHelpers.GetAllItems<UserSummary>(this.Connection, string.Format(CultureInfo.InvariantCulture,
+                   "user/{0}/following", userId),
+                   "following",
+                   parameters);
+        }
+        
+
+        /// <summary>
+        /// Gets a paginated list of followers for the given Goodreads user id.
+        /// </summary>
+        /// <param name="userId">The Goodreads user id.</param>
+        /// <param name="page">The current page of the paginated list.</param>
+        /// <param name="sort">The sort order of the paginated list.</param>
+        /// <returns>A paginated list of the user summary information for their followers.</returns>
+        public Task<PaginatedList<UserSummary>> GetListOfFollowers(int userId, int page = 1, SortFriendsList sort = SortFriendsList.FirstName)
+        {
+            var parameters = new List<Parameter>
+            {
+                new Parameter { Name = "id", Value = userId, Type = ParameterType.QueryString },
+                new Parameter { Name = "page", Value = page, Type = ParameterType.QueryString },
+                new Parameter
+                {
+                    Name = EnumHelpers.QueryParameterKey<SortFriendsList>(),
+                    Value = EnumHelpers.QueryParameterValue(sort),
+                    Type = ParameterType.QueryString
+                }
+            };
+
+            return Connection.ExecuteRequest<PaginatedList<UserSummary>>(string.Format(CultureInfo.InvariantCulture, 
+                    "user/{0}/followers", userId), 
+                    parameters, 
+                    null, 
+                    "followers");
+        }
+
+
+        /// <summary>
+        /// Gets a paginated list of users the given Goodreads user id is following.
+        /// </summary>
+        /// <param name="userId">The Goodreads user id.</param>
+        /// <param name="page">The current page of the paginated list.</param>
+        /// <param name="sort">The sort order of the paginated list.</param>
+        /// <returns>A paginated list of the user summary information for the users they are following.</returns>
+        public Task<PaginatedList<UserSummary>> GetListOfFollowing(int userId, int page = 1, SortFriendsList sort = SortFriendsList.FirstName)
+        {
+            var parameters = new List<Parameter>
+            {
+                new Parameter { Name = "id", Value = userId, Type = ParameterType.QueryString },
+                new Parameter { Name = "page", Value = page, Type = ParameterType.QueryString },
+                new Parameter
+                {
+                    Name = EnumHelpers.QueryParameterKey<SortFriendsList>(),
+                    Value = EnumHelpers.QueryParameterValue(sort),
+                    Type = ParameterType.QueryString
+                }
+            };
+
+            return Connection.ExecuteRequest<PaginatedList<UserSummary>>(string.Format(CultureInfo.InvariantCulture, 
+                "user/{0}/following", userId), 
+                parameters, 
+                null,
+                "following ");
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Goodreads.Models.Request;
 using Goodreads.Models.Response;
 
@@ -32,6 +33,51 @@ namespace Goodreads.Clients
         /// <param name="sort">The sort order of the paginated list.</param>
         /// <returns>A paginated list of the user summary information for their friends.</returns>
         Task<PaginatedList<UserSummary>> GetListOfFriends(int userId, int page = 1, SortFriendsList sort = SortFriendsList.FirstName);
+
+
+        /// <summary>
+        /// Gets a paginated list of followers for the given Goodreads user id.
+        /// </summary>
+        /// <param name="userId">The Goodreads user id.</param>
+        /// <param name="page">The current page of the paginated list.</param>
+        /// <param name="sort">The sort order of the paginated list.</param>
+        /// <returns>A paginated list of the user summary information for their followers.</returns>
+        Task<PaginatedList<UserSummary>> GetListOfFollowers(int userId, int page = 1,
+            SortFriendsList sort = SortFriendsList.FirstName);
+
+        /// <summary>
+        /// Gets a paginated list of users the given Goodreads user id is following.
+        /// </summary>
+        /// <param name="userId">The Goodreads user id.</param>
+        /// <param name="page">The current page of the paginated list.</param>
+        /// <param name="sort">The sort order of the paginated list.</param>
+        /// <returns>A paginated list of the user summary information for the users they are following.</returns>
+        Task<PaginatedList<UserSummary>> GetListOfFollowing(int userId, int page = 1,
+            SortFriendsList sort = SortFriendsList.FirstName);
+
+        /// <summary>
+        /// Gets a list of all friends for the given Goodreads user id.
+        /// </summary>
+        /// <param name="userId">The Goodreads user id.</param>
+        /// <param name="sort">The sort order of the paginated list.</param>
+        /// <returns>A list of the user summary information for their friends.</returns>
+        IReadOnlyList<UserSummary> GetListOfAllFriends(int userId, SortFriendsList sort = SortFriendsList.FirstName);
+
+        /// <summary>
+        /// Gets a list of all followers for the given Goodreads user id.
+        /// </summary>
+        /// <param name="userId">The Goodreads user id.</param>
+        /// <param name="sort">The sort order of the paginated list.</param>
+        /// <returns>A list of the user summary information for their followers.</returns>
+        IReadOnlyList<UserSummary> GetListOfAllFollowers(int userId, SortFriendsList sort = SortFriendsList.FirstName);
+
+        /// <summary>
+        /// Gets a list of all users the given Goodreads user id is following.
+        /// </summary>
+        /// <param name="userId">The Goodreads user id.</param>
+        /// <param name="sort">The sort order of the paginated list.</param>
+        /// <returns>A list of the user summary information for the users they are following</returns>
+        IReadOnlyList<UserSummary> GetListOfAllFollowing(int userId, SortFriendsList sort = SortFriendsList.FirstName);
 
         /// <summary>
         /// Gets the Goodreads user id of the authenticated connection.

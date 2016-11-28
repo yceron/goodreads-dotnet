@@ -63,6 +63,7 @@
     <Compile Include="Clients\SeriesClient.cs" />
     <Compile Include="Clients\UsersClient.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
+    <Compile Include="Helpers\ClientHelpers.cs" />
     <Compile Include="Helpers\EnumHelpers.cs" />
     <Compile Include="Extensions\RestSharpExtensions.cs" />
     <Compile Include="Extensions\XmlExtensions.cs" />

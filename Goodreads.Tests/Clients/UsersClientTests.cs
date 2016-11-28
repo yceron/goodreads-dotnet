@@ -81,6 +81,79 @@ namespace Goodreads.Tests.Clients
             }
         }
 
+        public class TheGetAllListsMethods : UsersClientTests
+        {
+            [Fact]
+            public void ReturnsAllFriends()
+            {
+                var friends = UsersClient.GetListOfAllFriends(UserId);
+
+                Assert.NotNull(friends);
+                Assert.True(friends.Count > 0);
+            }
+
+            [Fact]
+            public void ReturnsAllFollowers()
+            {
+                var followers = UsersClient.GetListOfAllFollowers(UserId);
+
+                Assert.NotNull(followers);
+                Assert.True(followers.Count > 0);
+            }
+
+            [Fact]
+            public void ReturnsAllFollowing()
+            {
+                var following = UsersClient.GetListOfAllFollowing(UserId);
+
+                Assert.NotNull(following);
+                Assert.True(following.Count > 0);
+            }
+        }
+
+        public class TheGetListOfFollowersMethod : UsersClientTests
+        {
+            [Fact]
+            public async Task ReturnsFollowers()
+            {
+                var followers = await UsersClient.GetListOfFollowers(UserId);
+
+                Assert.NotNull(followers);
+                Assert.NotEmpty(followers.List);
+                Assert.True(followers.Pagination.TotalItems > 0);
+            }
+
+            [Fact]
+            public async Task ReturnsNullIfNotFound()
+            {
+                var followers = await UsersClient.GetListOfFollowers(userId: -1);
+
+                Assert.Null(followers);
+            }
+        }
+
+        public class TheGetListOfFollowingMethod : UsersClientTests
+        {
+            [Fact]
+            public async Task ReturnsFollowing()
+            {
+                var following = await UsersClient.GetListOfFollowing(UserId);
+
+                Assert.NotNull(following);
+                Assert.NotEmpty(following.List);
+                Assert.True(following.Pagination.TotalItems > 0);
+            }
+
+            [Fact]
+            public async Task ReturnsNullIfNotFound()
+            {
+                var following = await UsersClient.GetListOfFollowing(userId: -1);
+
+                Assert.Null(following);
+            }
+        }
+
+
         public class TheGetAuthenticatedUserIdMethod : UsersClientTests
         {
             [Fact]

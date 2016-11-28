@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Xml.Linq;
 using Goodreads.Extensions;
@@ -46,6 +47,11 @@ namespace Goodreads.Models.Response
         /// </summary>
         public int ReviewsCount { get; protected set; }
 
+        /// <summary>
+        /// The date when the relationship was made
+        /// </summary>
+        public DateTime? CreatedAt { get; protected set; }
+
         internal string DebuggerDisplay
         {
             get
@@ -67,6 +73,8 @@ namespace Goodreads.Models.Response
             SmallImageUrl = element.ElementAsString("small_image_url");
             FriendsCount = element.ElementAsInt("friends_count");
             ReviewsCount = element.ElementAsInt("reviews_count");
+            CreatedAt = element.ElementAsDateTime("created_at");
+
         }
     }
 }

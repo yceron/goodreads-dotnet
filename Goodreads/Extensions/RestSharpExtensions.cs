@@ -85,6 +85,12 @@ namespace Goodreads.Extensions
                 return response;
             }
 
+            //Unauthorized
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                throw new ApiException("Invalid OAuth Request");
+            }
+
             // Try and find an error from the Goodreads response
             string error = null;
             try
